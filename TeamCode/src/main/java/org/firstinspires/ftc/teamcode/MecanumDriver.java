@@ -17,9 +17,10 @@ public class MecanumDriver extends LinearOpMode {
      */
     @Override
     public void runOpMode() {
-        float controlPad1LeftX;
+        double controlPad1LeftX;
         double controlPad1LeftY;
-        float controlPad1RightX;
+        double controlPad1RightX;
+        double controlPad1RightY;
         double frontLeftMotorPower;
         double frontRightMotorPower;
         double rearLeftMotorPower;
@@ -36,16 +37,15 @@ public class MecanumDriver extends LinearOpMode {
             // Put run blocks here.
             while (opModeIsActive()) {
                 controlPad1LeftX = gamepad1.left_stick_x;
-                controlPad1LeftY = -gamepad1.left_stick_y;
+                controlPad1LeftY = gamepad1.left_stick_y;
                 controlPad1RightX = gamepad1.right_stick_x;
-                frontLeftMotorPower = controlPad1LeftX + controlPad1LeftY;
-                frontLeftMotorPower = frontLeftMotorPower + controlPad1RightX;
-                frontRightMotorPower = controlPad1LeftY - controlPad1LeftX;
-                frontRightMotorPower = frontRightMotorPower - controlPad1RightX;
-                rearLeftMotorPower = controlPad1LeftY - controlPad1LeftX;
-                rearLeftMotorPower = rearLeftMotorPower + controlPad1RightX;
-                rearRightMotorPower = controlPad1LeftY + controlPad1LeftX;
-                rearRightMotorPower = rearRightMotorPower - controlPad1RightX;
+                controlPad1RightY = gamepad1.right_stick_y;
+
+                frontLeftMotorPower = controlPad1LeftX + controlPad1LeftX + controlPad1RightX;
+                rearLeftMotorPower = controlPad1LeftY - controlPad1LeftX + controlPad1RightX;
+                frontRightMotorPower = controlPad1LeftY - controlPad1LeftX - controlPad1RightX;
+                rearRightMotorPower = controlPad1LeftY + controlPad1LeftX - controlPad1RightX;
+
                 driveLeftFront.setPower(frontLeftMotorPower);
                 driveRightFront.setPower(frontRightMotorPower);
                 driveLeftBack.setPower(rearLeftMotorPower);
