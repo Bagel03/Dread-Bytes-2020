@@ -41,8 +41,8 @@ public class MecanumDriver extends LinearOpMode {
                 controlPad1RightX = gamepad1.right_stick_x;
                 controlPad1RightY = gamepad1.right_stick_y;
 
-                frontLeftMotorPower = controlPad1LeftX + controlPad1LeftX + controlPad1RightX;
-                rearLeftMotorPower = controlPad1LeftY - controlPad1LeftX + controlPad1RightX;
+                frontLeftMotorPower = -(controlPad1LeftX + controlPad1LeftY + controlPad1RightX);
+                rearLeftMotorPower = -(controlPad1LeftY - controlPad1LeftX + controlPad1RightX);
                 frontRightMotorPower = controlPad1LeftY - controlPad1LeftX - controlPad1RightX;
                 rearRightMotorPower = controlPad1LeftY + controlPad1LeftX - controlPad1RightX;
 
