@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "drivetorings1 (Blocks to Java)", group = "")
-public class drivetorings1 extends LinearOpMode {
+@Autonomous(name = "driveToRings1 (Blocks to Java)", group = "")
+public class driveToRings1 extends LinearOpMode {
 
     private DcMotor Driveleftback;
     private DcMotor driverightback;
