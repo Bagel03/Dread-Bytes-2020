@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import utils.Odometry;
 
 @Autonomous(name = "driveToRings1 (Blocks to Java)", group = "")
 public class driveToRings1 extends LinearOpMode {
@@ -11,6 +12,8 @@ public class driveToRings1 extends LinearOpMode {
     private DcMotor driverightback;
     private DcMotor driverightfront;
     private DcMotor driveleftfront;
+
+    private Odometry odometry = new Odometry(0, 0, 0);// Odometry(0, 0, 0);
 
     /**
      * This function is executed when this Op Mode is selected from the Driver Station.
@@ -32,6 +35,7 @@ public class driveToRings1 extends LinearOpMode {
         driveleftfront = hardwareMap.get(DcMotor.class, "drive left front");
 
         // Put initialization blocks here.
+        this.odometry.calculate(1, 1, 0);
         waitForStart();
         if (opModeIsActive()) {
             // Put run blocks here.
