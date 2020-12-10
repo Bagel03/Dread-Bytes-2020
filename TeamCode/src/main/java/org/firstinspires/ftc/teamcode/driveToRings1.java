@@ -13,7 +13,7 @@ public class driveToRings1 extends LinearOpMode {
     private DcMotor driverightfront;
     private DcMotor driveleftfront;
 
-    private Odometry odometry = new Odometry(0, 0, 0);// Odometry(0, 0, 0);
+    private Odometry odometry = new Odometry(0, 0, 0, 16, 16, 1.5f);
 
     /**
      * This function is executed when this Op Mode is selected from the Driver Station.
@@ -35,7 +35,6 @@ public class driveToRings1 extends LinearOpMode {
         driveleftfront = hardwareMap.get(DcMotor.class, "drive left front");
 
         // Put initialization blocks here.
-        this.odometry.calculate(1, 1, 0);
         waitForStart();
         if (opModeIsActive()) {
             // Put run blocks here.
@@ -51,6 +50,9 @@ public class driveToRings1 extends LinearOpMode {
             driveleftfront.setTargetPosition(500);
             driverightfront.setTargetPosition(-500);
             driverightback.setTargetPosition(-500);
+
+//            float[] changes = odometry.getVelocities(put motor powers here)
+//            float[] position = odometry.calculate(changes[0], changes[1], changes[2])
             while (opModeIsActive()) {
                 Driveleftback.setPower(0.1);
                 driveleftfront.setPower(0.1);

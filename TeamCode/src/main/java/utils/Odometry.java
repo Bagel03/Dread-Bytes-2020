@@ -1,14 +1,20 @@
 package utils;
 
 public class Odometry {
-    float globalLastX;
-    float globalLastY;
-    float globalLastRotation;
+    public float globalLastX;
+    public float globalLastY;
+    public float globalLastRotation;
+    private float l;
+    private float b;
+    private float R;
 
-    public Odometry(float x, float y, float rotation){
-        globalLastX = x;
-        globalLastY = y;
-        globalLastRotation= rotation;
+    public Odometry(float startX, float startY, float startRotation, float halfLR, float halfFB, float wheelRadius){
+        globalLastX = startX;
+        globalLastY = startY;
+        globalLastRotation= startRotation;
+        l = halfLR;
+        b = halfFB;
+        R = wheelRadius;
     }
 
     public float[] calculate(float xChange, float yChange, float rotationChange){
@@ -43,44 +49,55 @@ public class Odometry {
         return finalCurrentPosition;
     }
 
+    public float[] getVelocities(float Wlb, float Wlf, float Wrb, float Wrf){
+        float[] result = {};
+        result[0] = solveVel(Wlb) + solveVel(Wlf) + solveVel(Wrb) + solveVel(Wrf);
+        result[1] = solveVel(Wlb) - solveVel(Wlf) - solveVel(Wrb) + solveVel(Wrf);
+        result[3] = -solveRot(Wlb) - solveRot(Wlf) + solveRot(Wrb) + solveRot(Wrf);
+        return  result;
+    }
+    public static float[][] multiplyMatrices(float[][] A, float[][] B) {
 
-        public static float[][] multiplyMatrices(float[][] A, float[][] B) {
+        int aRows = A.length;
+        int aColumns = A[0].length;
+        int bRows = B.length;
+        int bColumns = B[0].length;
 
-            int aRows = A.length;
-            int aColumns = A[0].length;
-            int bRows = B.length;
-            int bColumns = B[0].length;
-
-            if (aColumns != bRows) {
-                throw new IllegalArgumentException("A:Rows: " + aColumns + " did not match B:Columns " + bRows + ".");
-            }
-
-            float[][] C = new float[aRows][bColumns];
-            for (int i = 0; i < aRows; i++) {
-                for (int j = 0; j < bColumns; j++) {
-                    C[i][j] = 0;
-                }
-            }
-
-            for (int i = 0; i < aRows; i++) { // aRow
-                for (int j = 0; j < bColumns; j++) { // bColumn
-                    for (int k = 0; k < aColumns; k++) { // aColumn
-                        C[i][j] += A[i][k] * B[k][j];
-                    }
-                }
-            }
-
-            return C;
-        }
-        public static float[][] addMatrices(float[][] A, float[][] B){
-            float[][] c = {};
-            for(int i = 0; i < A.length; i++){
-                for(int j = 0; j < A[0].length; j++){
-                    c[i][j] = A[i][j] + B[i][j];
-                }
-            }
-            return c;
+        if (aColumns != bRows) {
+            throw new IllegalArgumentException("A:Rows: " + aColumns + " did not match B:Columns " + bRows + ".");
         }
 
+        float[][] C = new float[aRows][bColumns];
+        for (int i = 0; i < aRows; i++) {
+            for (int j = 0; j < bColumns; j++) {
+                C[i][j] = 0;
+            }
+        }
+
+        for (int i = 0; i < aRows; i++) { // aRow
+            for (int j = 0; j < bColumns; j++) { // bColumn
+                for (int k = 0; k < aColumns; k++) { // aColumn
+                    C[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+
+        return C;
+    }
+    public static float[][] addMatrices(float[][] A, float[][] B){
+        float[][] c = {};
+        for(int i = 0; i < A.length; i++){
+            for(int j = 0; j < A[0].length; j++){
+                c[i][j] = A[i][j] + B[i][j];
+            }
+        }
+        return c;
+    }
+    private float solveVel(float wheel){
+        return (R-wheel)/4;
+    }
+    private float solveRot(float wheel){
+        return  (R-wheel)/(4 * (b + l));
+    }
 }
 
